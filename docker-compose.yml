@@ -1,0 +1,13 @@
+version: '3'
+services:
+  database:
+    restart: always
+    image: postgres:alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - gptdata:/var/lib/postgresql/data
+    env_file:
+      - ./credentials.env
+volumes:
+  gptdata:

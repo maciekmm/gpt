@@ -24,9 +24,9 @@ func mapJsonToDbCasing(json string) string {
 
 func InitDatabase() (*sqlx.DB, error) {
 	db, err := sqlx.Connect("postgres", fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", os.Getenv("POSTGRES_USER"), os.Getenv("POSTGRES_PASSWORD"), os.Getenv("POSTGRES_DB")))
-	db.Mapper = reflectx.NewMapperTagFunc("json", mapJsonToDbCasing, mapJsonToDbCasing)
 	if err != nil {
 		return db, err
 	}
+	db.Mapper = reflectx.NewMapperTagFunc("json", mapJsonToDbCasing, mapJsonToDbCasing)
 	return db, nil
 }

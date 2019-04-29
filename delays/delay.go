@@ -27,7 +27,8 @@ const schema = `CREATE TABLE IF NOT EXISTS delays (
 	theoretical_time time NOT NULL,
 	vehicle_code integer NOT NULL,
 	vehicle_id integer NOT NULL,
-	CONSTRAINT delays_pk PRIMARY KEY(last_update, stop_id, route_id, trip_id, trip)
+	CONSTRAINT delays_pk PRIMARY KEY(stop_id, route_id, trip_id, trip)
+	CONSTRAINT delays_unique UNIQUE(stop_id, route_id, trip_id, trip, delay_in_seconds)
 )`
 
 type Delays struct {
@@ -75,6 +76,7 @@ func getDelays() ([]*Delay, error) {
 			continue
 		}
 		for _, delay := range delays.Delay {
+			delay.DelayInSeconds = int(delay.DelayInSeconds/60) * 60
 			delay.LastUpdate = delays.LastUpdate
 			delay.StopID = int64(stopID)
 			flatDelays = append(flatDelays, delay)

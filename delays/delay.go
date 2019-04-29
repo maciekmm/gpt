@@ -27,7 +27,7 @@ const schema = `CREATE TABLE IF NOT EXISTS delays (
 	theoretical_time time NOT NULL,
 	vehicle_code integer NOT NULL,
 	vehicle_id integer NOT NULL,
-	CONSTRAINT delays_pk PRIMARY KEY(stop_id, route_id, trip_id, trip)
+	CONSTRAINT delays_pk PRIMARY KEY(stop_id, route_id, trip_id, trip),
 	CONSTRAINT delays_unique UNIQUE(stop_id, route_id, trip_id, trip, delay_in_seconds)
 )`
 
@@ -103,7 +103,7 @@ func main() {
 	for _, delay := range delays {
 		if _, err := db.NamedExec(`INSERT INTO delays (last_update, "timestamp", stop_id, trip, trip_id, route_id, "id", delay_in_seconds, estimated_time, head_sign, status, theoretical_time, vehicle_code, vehicle_id)
 			VALUES (:last_update, :timestamp, :stop_id, :trip, :trip_id, :route_id, :id, :delay_in_seconds, :estimated_time, :head_sign, :status, :theoretical_time, :vehicle_code, :vehicle_id)
-			ON CONFLICT (last_update, stop_id, route_id, trip_id, trip) DO NOTHING`, delay); err != nil {
+			ON CONFLICT (stop_id, route_id, trip_id, trip, delay_in_seconds) DO NOTHING`, delay); err != nil {
 			log.Fatalln(err)
 		}
 	}

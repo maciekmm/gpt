@@ -27,8 +27,7 @@ const schema = `CREATE TABLE IF NOT EXISTS delays (
 	theoretical_time time NOT NULL,
 	vehicle_code integer NOT NULL,
 	vehicle_id integer NOT NULL,
-	CONSTRAINT delays_pk PRIMARY KEY(stop_id, route_id, trip_id, trip),
-	CONSTRAINT delays_unique UNIQUE(stop_id, route_id, trip_id, trip, delay_in_seconds)
+	CONSTRAINT delays_pk PRIMARY KEY(stop_id, route_id, trip_id, trip, delay_in_seconds)
 )`
 
 type Delays struct {
